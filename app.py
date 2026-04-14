@@ -11,11 +11,15 @@ app.secret_key = "secret123"
 
 
 # Connect to MongoDB
+import certifi
 from pymongo import MongoClient
 import os
 
-MONGO_URI = os.environ.get("MONGO_URI")
-client = MongoClient(MONGO_URI)
+client = MongoClient(
+    os.environ.get("MONGO_URI"),
+    tls=True,
+    tlsCAFile=certifi.where()
+)
 
 client = MongoClient("mongodb+srv://darshan:Darsh123@cluster0.dk0funy.mongodb.net/?appName=Cluster0")
 db = client["alumni_db"]
