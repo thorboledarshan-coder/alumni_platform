@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "69d95836541a4f13b9370039"
+  },
+  "title": "AI",
+  "description": "Lets, Have some discussion on the onging leading Ai effect",
+  "date": "2026-04-22",
+  "created_by": "darshanthorbole@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "69d95ca4b340ea26691255b6"
+  },
+  "title": "",
+  "description": "",
+  "date": "",
+  "created_by": "darshanthorbole@gmail.com"
+}]

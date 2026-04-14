@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Events</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+<h2>Upcoming Events</h2>
+
+<div class="row mt-4">
+
+    {% for e in events %}
+    <div class="col-md-4">
+    <div class="card p-3 shadow">
+    
+    <h5>{{e.title}}</h5>
+    <p>{{e.description}}</p>
+    <p><strong>Date:</strong> {{e.date}}</p>
+    
+    <!-- BUTTONS -->
+    <div class="mt-2">
+
+        {% if session.get("role") == "student" %}
+        <a href="/register_event/{{e._id}}" class="btn btn-primary btn-sm">Register</a>
+        {% endif %}
+        
+        {% if session.get("role") == "alumni" %}
+        <a href="/edit_event/{{e._id}}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="/delete_event/{{e._id}}" class="btn btn-danger btn-sm">Delete</a>
+        {% endif %}
+        
+        </div>
+
+    <p class="text-muted"><strong>Created by:</strong> {{e.created_by}}</p>
+    
+    </div>
+    
+    </div>
+    </div>
+    {% endfor %}
+
+</div> 
+
+</body>
+</html>

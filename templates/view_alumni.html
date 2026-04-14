@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Alumni</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">Alumni List</h2>
+
+    <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Skills</th>
+                <th>Batch</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for a in data %}
+            <tr>
+                <td>{{ a.name }}</td>
+                <td>{{ a.email }}</td>
+                <td>{{ a.role }}</td>
+                <td>{{ a.skills }}</td>
+                <td>{{ a.batch }}</td>
+
+                <td>
+                    <a href="/chat/{{a.email}}" class="btn btn-primary btn-sm">
+                        Chat
+                        </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

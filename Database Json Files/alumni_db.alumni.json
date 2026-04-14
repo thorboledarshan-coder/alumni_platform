@@ -1,0 +1,55 @@
+[{
+  "_id": {
+    "$oid": "69d7602a20e0d594dbb63aea"
+  },
+  "name": "Darshan Thorbole",
+  "batch": "2022-2026",
+  "company": "Google",
+  "role": "SDE-I",
+  "skills": "machine-learning",
+  "email": "darshanthorbole@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "69d7668d04c50acf02018591"
+  },
+  "name": "Om Gaikwad",
+  "batch": "2022-2026",
+  "company": "TCS",
+  "role": "Data Analyst",
+  "skills": "java",
+  "email": "omgaikwad@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "69d766c404c50acf02018592"
+  },
+  "name": "Vaibhav Gayakwad",
+  "batch": "2022-2026",
+  "company": "Infosys",
+  "role": "Developer",
+  "skills": "python",
+  "email": "vaibhavgayakwad@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "69d7d5d1f52ea3e6bf895ccc"
+  },
+  "name": "Atul Jadhav",
+  "batch": "2022-2026",
+  "company": "Microsoft",
+  "role": "Cyber Security ",
+  "skills": "python",
+  "email": "atuljadhav@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "69d7f9ef7d7644276b72b04a"
+  },
+  "name": "Ranjeet",
+  "batch": "2022-2026",
+  "company": "TCS",
+  "role": " Java Developer",
+  "skills": "java,python",
+  "email": "ranjeet@gmail.com"
+}]

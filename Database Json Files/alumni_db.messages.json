@@ -1,0 +1,42 @@
+[{
+  "_id": {
+    "$oid": "69d94aabba0723df3e815a03"
+  },
+  "sender": "admin@gmail.com",
+  "receiver": "darshanthorbole@gmail.com",
+  "message": "hi",
+  "reply": "please, contact me at 654637467"
+},
+{
+  "_id": {
+    "$oid": "69d94b6aba0723df3e815a04"
+  },
+  "sender": "garadgaurav@gmail.com",
+  "receiver": "atuljadhav@gmail.com",
+  "message": "Hi , i want to have some chat with you."
+},
+{
+  "_id": {
+    "$oid": "69d95112d15d29b883426344"
+  },
+  "sender": "garadgaurav@gmail.com",
+  "receiver": "atuljadhav@gmail.com",
+  "message": "hi"
+},
+{
+  "_id": {
+    "$oid": "69d95131d15d29b883426345"
+  },
+  "sender": "garadgaurav@gmail.com",
+  "receiver": "darshanthorbole@gmail.com",
+  "message": "welcome",
+  "reply": "Tell me something about you.\r\n"
+},
+{
+  "_id": {
+    "$oid": "69d958cd541a4f13b937003a"
+  },
+  "sender": "garadgaurav@gmail.com",
+  "receiver": "ranjeet@gmail.com",
+  "message": "hi,ranjeet sir"
+}]

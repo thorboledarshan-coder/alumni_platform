@@ -1,0 +1,36 @@
+[{
+  "_id": {
+    "$oid": "69d75736425222738ec5f16b"
+  },
+  "name": "Om Ramrao Gaikwad",
+  "email": "omgaikwad7668@gmail.com",
+  "password": "12334",
+  "role": "student"
+},
+{
+  "_id": {
+    "$oid": "69d75feb20e0d594dbb63ae9"
+  },
+  "name": "Darshan Thorbole",
+  "email": "darshanthorbole@gmail.com",
+  "password": "4242",
+  "role": "alumni"
+},
+{
+  "_id": {
+    "$oid": "69d7e637ce257a2d3cc5bb2b"
+  },
+  "name": "Admin",
+  "email": "admin@gmail.com",
+  "password": "admin4242",
+  "role": "admin"
+},
+{
+  "_id": {
+    "$oid": "69d7eb1fe7420689e5e711c9"
+  },
+  "name": "Gaurav Garad",
+  "email": "garadgaurav@gmail.com",
+  "password": "12345",
+  "role": "student"
+}]
