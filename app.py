@@ -21,7 +21,7 @@ client = MongoClient(
     tlsCAFile=certifi.where()
 )
 
-client = MongoClient("mongodb+srv://darshan:Darsh123@cluster0.dk0funy.mongodb.net/?appName=Cluster0")
+client = MongoClient("mongodb+srv://darshan2:darshan123@cluster0.dk0funy.mongodb.net/?appName=Cluster0")
 db = client["alumni_db"]
 db = client["alumni_db"]
 collection = db["users"]
