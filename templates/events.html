@@ -27,12 +27,12 @@
     <div class="mt-2">
 
         {% if session.get("role") == "student" %}
-        <a href="/register_event/{{e._id}}" class="btn btn-primary btn-sm">Register</a>
+        <a href="/register_event/{{e._id}}" class="btn btn-primary btn-sm mt-2 w-100">Register</a>
         {% endif %}
         
         {% if session.get("role") == "alumni" %}
-        <a href="/edit_event/{{e._id}}" class="btn btn-warning btn-sm">Edit</a>
-        <a href="/delete_event/{{e._id}}" class="btn btn-danger btn-sm">Delete</a>
+        <a href="/edit_event/{{e._id}}" class="btn btn-warning btn-sm mt-2 w-100">Edit</a>
+        <a href="/delete_event/{{e._id}}" class="btn btn-danger btn-sm mt-2 w-100">Delete</a>
         {% endif %}
         
         </div>
