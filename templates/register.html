@@ -17,7 +17,7 @@
 <form action="/register" method="POST" class="w-50 mx-auto">
 
     <div class="mb-3">
-    <label>Select Role</label>
+    <label>Select user</label>
     <select name="role" class="form-control">
     <option value="alumni">Alumni</option>
     <option value="student">Student</option>
@@ -46,12 +46,16 @@
 
     <div class="mb-3">
         <label>Batch</label>
-        <input type="text" name="batch" class="form-control">
+        <input type="text" name="batch" class="form-control" placeholder="2022-2026">
     </div>
 
     <div class="mb-3">
         <label>Company</label>
-        <input type="text" name="company" class="form-control" >
+        <input type="text" name="company" class="form-control"placeholder="Google,TCS" >
+    </div>
+    <div class="mb-3">
+        <label>job_role</label>
+        <input type="text" name="job_role" class="form-control" placeholder="Software Engineer,Data Analyst" >
     </div>
     
     <button class="btn btn-success mt-2 w-100">Register</button>

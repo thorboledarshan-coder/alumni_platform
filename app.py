@@ -23,9 +23,9 @@ client = MongoClient(
 
 client = MongoClient("mongodb+srv://darshan2:darshan123@cluster0.dk0funy.mongodb.net/?appName=Cluster0")
 db = client["alumni_db"]
-db = client["alumni_db"]
-collection = db["users"]
-alumni_collection = db["alumni"]
+
+users_collection = db["users"]      # for login
+alumni_collection = db["alumni"]    # for alumni data
 
 @app.route("/")
 def home():
@@ -38,7 +38,7 @@ def login():
         password = request.form["password"]
 
         # Check user in MongoDB
-        user = collection.find_one({
+        user = users_collection.find_one({
             "email": email,
             "password": password
         })
@@ -93,6 +93,7 @@ def register():
         name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
+        role = request.form.get("role")
 
         # Insert into MongoDB
         role = request.form["role"]
@@ -100,13 +101,22 @@ def register():
         batch = request.form.get("batch")
         company = request.form.get("company")
         email = request.form.get("email")
+        job_role = request.form.get("job_role")
+        
+        users_collection.insert_one({
+            "name": name,
+            "email": email,
+            "password": password,
+            "role": role
+        })
+        
         alumni_collection.insert_one({
        "name": name,
        "batch": batch,
        "company": company,
-       "role": role,
       "skills": skills,
-      "email": email
+      "email": email,
+      "job_role": job_role
 })
 
         return "User Registered Successfully!"
@@ -169,13 +179,15 @@ def add_alumni():
         company = request.form["company"]
         role = request.form["role"]
         skills = request.form["skills"]
+        job_role = request.form["job_role"]
 
         alumni_collection.insert_one({
             "name": name,
             "batch": batch,
             "company": company,
             "role": role,
-            "skills": skills
+            "skills": skills,
+            "job_role": job_role
         })
 
         return "Alumni Added Successfully!"
