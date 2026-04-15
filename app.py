@@ -65,7 +65,7 @@ def login():
 @app.route("/view_users")
 def view_users():
     if "role" in session and session["role"] == "admin":
-        users = collection.find()
+        users = users_collection.find()
         return render_template("view_users.html", users=users)
     else:
         return "Access Denied"
@@ -120,6 +120,7 @@ def register():
 })
 
         return "User Registered Successfully!"
+    
 
     return render_template("register.html")
 
@@ -134,7 +135,7 @@ def dashboard():
 def admin_dashboard():
     if "role" in session and session["role"] == "admin":
 
-        total_users = collection.count_documents({})
+        total_users = users_collection.count_documents({})
         total_alumni = alumni_collection.count_documents({})
 
         companies = alumni_collection.distinct("company")
