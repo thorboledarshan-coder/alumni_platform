@@ -181,45 +181,41 @@ def find_mentor():
     return render_template("view_alumni.html", data=data)
     
     
+
+
 @app.route("/recommend")
 def recommend():
+    alumni = list(alumni_collection.find())
 
-    if "email" not in session:
-        return redirect("/login")
+    # 🔴 If no data
+    if not alumni:
+        return "No alumni data found"
 
-    user = users_collection.find_one({"email": session["email"]})
+    # ✅ Get skills list
+    skills_list = [a.get("skills", "") for a in alumni]
 
-    if not user or "skills" not in user:
-        return "Please add your skills first"
+    # ✅ Convert to vectors
+    vectorizer = CountVectorizer().fit_transform(skills_list)
 
-    alumni = list(users_collection.find({"role": "alumni"}))
-
-    skill_list = [user["skills"]]
-    alumni_list = []
-
-    for a in alumni:
-        if "skills" in a:
-            skill_list.append(a["skills"])
-            alumni_list.append(a)
-
-    cv = CountVectorizer()
-    vectors = cv.fit_transform(skill_list)
-
-    similarity = cosine_similarity(vectors)[0][1:]
+    # ✅ Calculate similarity
+    similarity = cosine_similarity(vectorizer)
 
     results = []
 
-    for i, score in enumerate(similarity):
-        results.append({
-            "name": alumni_list[i]["name"],
-            "email": alumni_list[i]["email"],
-            "score": score
-        })
+    # ✅ Compare alumni
+    for i in range(len(alumni)):
+        for j in range(i + 1, len(alumni)):
+            score = similarity[i][j] * 100
 
-    results = sorted(results, key=lambda x: x["score"], reverse=True)
+            if score > 0:
+                results.append({
+                    "name": alumni[j].get("name", "N/A"),
+                    "email": alumni[j].get("email", "N/A"),
+                    "match": round(score, 2)
+                })
 
-    return render_template("recommend.html", results=results)
-    
+    # ✅ Send data to HTML
+    return render_template("recommend.html", data=results)
 @app.route("/add_alumni", methods=["GET", "POST"])
 def add_alumni():
     if request.method == "POST":
