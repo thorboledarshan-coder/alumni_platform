@@ -4,6 +4,8 @@ from flask import request
 
 from flask import Flask, render_template, request, redirect, session
 from pymongo import MongoClient
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 app = Flask(__name__)
@@ -90,37 +92,38 @@ def admin_reports():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+
         name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
-        role = request.form.get("role")
-
-        # Insert into MongoDB
         role = request.form["role"]
-        skills = request.form["skills"]
-        batch = request.form.get("batch")
-        company = request.form.get("company")
-        email = request.form.get("email")
-        job_role = request.form.get("job_role")
-        
+        skills = request.form.get("skills", "").lower()
+
+        # Save in users collection (ALL users)
         users_collection.insert_one({
             "name": name,
             "email": email,
             "password": password,
-            "role": role
+            "role": role,
+            "skills": skills   # 🔥 IMPORTANT for recommendation
         })
-        
-        alumni_collection.insert_one({
-       "name": name,
-       "batch": batch,
-       "company": company,
-      "skills": skills,
-      "email": email,
-      "job_role": job_role
-})
+
+        # Save extra details ONLY if alumni
+        if role == "alumni":
+            batch = request.form.get("batch")
+            company = request.form.get("company")
+            job_role = request.form.get("job_role")
+
+            alumni_collection.insert_one({
+                "name": name,
+                "email": email,
+                "batch": batch,
+                "company": company,
+                "skills": skills,
+                "job_role": job_role
+            })
 
         return "User Registered Successfully!"
-    
 
     return render_template("register.html")
 
@@ -171,6 +174,46 @@ def profile():
         return render_template("profile.html", user=user)
     else:
         return redirect("/login")
+    
+    
+@app.route("/recommend")
+def recommend():
+
+    if "email" not in session:
+        return redirect("/login")
+
+    user = collection.find_one({"email": session["email"]})
+
+    if not user or "skills" not in user:
+        return "Please add your skills first"
+
+    alumni = list(collection.find({"role": "alumni"}))
+
+    skill_list = [user["skills"]]
+    alumni_list = []
+
+    for a in alumni:
+        if "skills" in a:
+            skill_list.append(a["skills"])
+            alumni_list.append(a)
+
+    cv = CountVectorizer()
+    vectors = cv.fit_transform(skill_list)
+
+    similarity = cosine_similarity(vectors)[0][1:]
+
+    results = []
+
+    for i, score in enumerate(similarity):
+        results.append({
+            "name": alumni_list[i]["name"],
+            "email": alumni_list[i]["email"],
+            "score": score
+        })
+
+    results = sorted(results, key=lambda x: x["score"], reverse=True)
+
+    return render_template("recommend.html", results=results)
     
 @app.route("/add_alumni", methods=["GET", "POST"])
 def add_alumni():
