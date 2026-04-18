@@ -204,16 +204,20 @@ def recommend():
     # 🔥 Compare FIRST alumni with others
     similarity = cosine_similarity(vectors[0:1], vectors)[0]
 
-    results = []
+    best_index = 1
+    best_score = similarity[1]
 
-    for i in range(1, len(alumni)):
-        results.append({
-            "name": alumni[i].get("name", "N/A"),
-            "email": alumni[i].get("email", "N/A"),
-            "match": round(similarity[i] * 100, 2)
-        })
+    for i in range(2, len(alumni)):
+        if similarity[i] > best_score:
+            best_score = similarity[i]
+            best_index = i
 
-    return render_template("recommend.html", data=results)
+    best_match = {
+        "name": alumni[best_index].get("name", "N/A"),
+        "email": alumni[best_index].get("email", "N/A"),
+        "match": round(best_score * 100, 2)}
+    return render_template("recommend.html", data=[best_match])
+
 
 @app.route("/add_alumni", methods=["GET", "POST"])
 def add_alumni():
