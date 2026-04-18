@@ -35,10 +35,11 @@ def home():
     return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
+        email = request.form.get("email")
+        password = request.form.get("password")
 
         # Check user in MongoDB
         user = users_collection.find_one({
@@ -47,19 +48,22 @@ def login():
         })
 
         if user:
-         session["user"] = user["name"]
-         session["email"] = user["email"]
-         session["role"] = user["role"]
+            # ✅ Store session
+            session["user_email"] = user["email"]
+            session["user"] = user["name"]
+            session["email"] = user["email"]
+            session["role"] = user["role"]
 
-        if user["role"] == "admin":
-         return redirect("/admin_dashboard")
+            # ✅ Redirect based on role
+            if user["role"] == "admin":
+                return redirect("/admin_dashboard")
 
-        elif user["role"] == "alumni":
-         return redirect("/dashboard")
+            elif user["role"] == "alumni":
+                return redirect("/dashboard")
 
-        elif user["role"] == "student":
-         return redirect("/student_dashboard")
-     
+            elif user["role"] == "student":
+                return redirect("/student_dashboard")
+
         else:
             return "Invalid Email or Password"
 
