@@ -27,7 +27,8 @@ client = MongoClient("mongodb+srv://darshan2:darshan123@cluster0.dk0funy.mongodb
 db = client["alumni_db"]
 
 users_collection = db["users"]      # for login
-alumni_collection = db["alumni"]    # for alumni data
+alumni_collection = db["alumni"]    # for alumni details
+students_collection = db["students"] # for student data
 
 @app.route("/")
 def home():
@@ -98,6 +99,12 @@ def register():
         password = request.form["password"]
         role = request.form["role"]
         skills = request.form.get("skills", "").lower()
+        
+        # 🔥 CHECK DUPLICATE
+        existing_user = users_collection.find_one({"email": email})
+        if existing_user:
+            return "User already exists"
+
 
         # Save in users collection (ALL users)
         users_collection.insert_one({
@@ -106,6 +113,13 @@ def register():
             "password": password,
             "role": role,
             "skills": skills   # 🔥 IMPORTANT for recommendation
+        })
+        
+        # 🔹 Save in students collection (for recommendation)
+        students_collection.insert_one({
+            "name": name,
+            "email": email,
+            "skills": skills
         })
 
         # Save extra details ONLY if alumni
@@ -123,7 +137,17 @@ def register():
                 "job_role": job_role
             })
 
-        return "User Registered Successfully!"
+        return """
+        <h2 style='text-align:center; margin-top:50px;'>
+        ✅ Registered Successfully
+        </h2>
+
+        <script>
+          setTimeout(function(){
+           window.location.href = "/login";
+    }, 2000);
+</script>
+"""
 
     return render_template("register.html")
 
@@ -186,17 +210,26 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 @app.route("/recommend")
 def recommend():
+    if "user_email" not in session:
+     return redirect("/login")
+    
+    user = students_collection.find_one({
+    "email": session["user_email"]
+})
+
+    user_skills = user.get("skills", "").replace(",", " ").lower().strip()
+    
     alumni = list(alumni_collection.find())
 
     if len(alumni) < 1:
         return "Not enough data for recommendation"
 
     # 🔥 Clean skills properly
-    skills_list = [
-        a.get("skills", "").replace(",", " ").lower().strip()
-        for a in alumni
-    ]
-
+    skills_list = [user_skills] + [
+    a.get("skills", "").replace(",", " ").lower().strip()
+    for a in alumni]
+    
+    
     # 🔥 Vectorize
     vectorizer = TfidfVectorizer()
     vectors = vectorizer.fit_transform(skills_list)
@@ -213,8 +246,8 @@ def recommend():
             best_index = i
 
     best_match = {
-        "name": alumni[best_index].get("name", "N/A"),
-        "email": alumni[best_index].get("email", "N/A"),
+        "name":  alumni[best_index - 1].get("name", "N/A"),
+        "email": alumni[best_index - 1].get("email", "N/A"),
         "match": round(best_score * 100, 2)}
     return render_template("recommend.html", data=[best_match])
 

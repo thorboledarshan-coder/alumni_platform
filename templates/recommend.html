@@ -12,25 +12,15 @@
 
 <h3>🎯 Recommended Alumni</h3>
 
-<table class="table table-bordered mt-4">
+<div class="container mt-4">
+    <div class="card p-3 shadow">
+        <h3>🎯 Best Mentor Match</h3>
 
-<tr>
-<th>Name</th>
-<th>Email</th>
-<th>Match %</th>
-</tr>
-
-<tbody>
-    {% for a in data %}
-     <tr>
-        <td>{{ a.name }}</td>
-        <td>{{ a.email }}</td>
-        <td>{{ a.match }}%</td>
-     </tr>
-    {% endfor %}
-    </tbody>
-
-</table>
+        <p><b>Name:</b> {{ data[0].name }}</p>
+        <p><b>Email:</b> {{ data[0].email }}</p>
+        <p><b>Match Score:</b> {{ data[0].match }}%</p>
+    </div>
+</div>
 
 </div>
 
