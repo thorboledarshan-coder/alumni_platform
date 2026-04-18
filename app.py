@@ -180,42 +180,41 @@ def find_mentor():
     data = alumni_collection.find()
     return render_template("view_alumni.html", data=data)
     
-    
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 @app.route("/recommend")
 def recommend():
     alumni = list(alumni_collection.find())
 
-    # 🔴 If no data
-    if not alumni:
-        return "No alumni data found"
+    if len(alumni) < 1:
+        return "Not enough data for recommendation"
 
-    # ✅ Get skills list
-    skills_list = [a.get("skills", "") for a in alumni]
+    # 🔥 Clean skills properly
+    skills_list = [
+        a.get("skills", "").replace(",", " ").lower().strip()
+        for a in alumni
+    ]
 
-    # ✅ Convert to vectors
-    vectorizer = CountVectorizer().fit_transform(skills_list)
+    # 🔥 Vectorize
+    vectorizer = TfidfVectorizer()
+    vectors = vectorizer.fit_transform(skills_list)
 
-    # ✅ Calculate similarity
-    similarity = cosine_similarity(vectorizer)
+    # 🔥 Compare FIRST alumni with others
+    similarity = cosine_similarity(vectors[0:1], vectors)[0]
 
     results = []
 
-    # ✅ Compare alumni
-    for i in range(len(alumni)):
-        for j in range(i + 1, len(alumni)):
-            score = similarity[i][j] * 100
+    for i in range(1, len(alumni)):
+        results.append({
+            "name": alumni[i].get("name", "N/A"),
+            "email": alumni[i].get("email", "N/A"),
+            "match": round(similarity[i] * 100, 2)
+        })
 
-            if score > 0:
-                results.append({
-                    "name": alumni[j].get("name", "N/A"),
-                    "email": alumni[j].get("email", "N/A"),
-                    "match": round(score, 2)
-                })
-
-    # ✅ Send data to HTML
     return render_template("recommend.html", data=results)
+
 @app.route("/add_alumni", methods=["GET", "POST"])
 def add_alumni():
     if request.method == "POST":

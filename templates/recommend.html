@@ -20,13 +20,15 @@
 <th>Match %</th>
 </tr>
 
-{% for r in results %}
-<tr>
-<td>{{r.name}}</td>
-<td>{{r.email}}</td>
-<td>{{ (r.score*100)|round(2) }}%</td>
-</tr>
-{% endfor %}
+<tbody>
+    {% for a in data %}
+    <tr>
+        <td>{{ a.name }}</td>
+        <td>{{ a.email }}</td>
+        <td>{{ a.match }}%</td>
+    </tr>
+    {% endfor %}
+    </tbody>
 
 </table>
 
