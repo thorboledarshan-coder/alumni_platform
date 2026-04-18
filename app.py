@@ -170,10 +170,15 @@ def logout():
 @app.route("/profile")
 def profile():
     if "email" in session:
-        user = collection.find_one({"email": session["email"]})
+        user = users_collection.find_one({"email": session["email"]})
         return render_template("profile.html", user=user)
     else:
         return redirect("/login")
+    
+@app.route("/find_mentor")
+def find_mentor():
+    data = alumni_collection.find()
+    return render_template("view_alumni.html", data=data)
     
     
 @app.route("/recommend")
@@ -182,12 +187,12 @@ def recommend():
     if "email" not in session:
         return redirect("/login")
 
-    user = collection.find_one({"email": session["email"]})
+    user = users_collection.find_one({"email": session["email"]})
 
     if not user or "skills" not in user:
         return "Please add your skills first"
 
-    alumni = list(collection.find({"role": "alumni"}))
+    alumni = list(users_collection.find({"role": "alumni"}))
 
     skill_list = [user["skills"]]
     alumni_list = []
